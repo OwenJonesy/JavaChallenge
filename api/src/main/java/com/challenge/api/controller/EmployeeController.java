@@ -1,14 +1,18 @@
 package com.challenge.api.controller;
 
 import com.challenge.api.model.Employee;
+
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
 import com.challenge.api.model.EmployeeImpl;
 import com.challenge.api.service.EmployeeService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * Fill in the missing aspects of this Spring Web REST Controller. Don't forget to add a Service layer.
@@ -52,10 +56,23 @@ public class EmployeeController {
     /**
      * @implNote Need not be concerned with an actual persistence layer.
      * @param requestBody hint!
-     * @return Newly created Employee
+     * @return Newly created Employee with a RESTful 201 response
      */
     @PostMapping //Tells spring to handle POST requests
-    public Employee createEmployee(@RequestBody EmployeeImpl employee) {
-        return employeeService.createEmployee(employee);
+    public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeImpl employee) {
+
+        Employee createdEmployee = employeeService.createEmployee(employee);
+
+        //builds a URI pointing to the newly created resource.
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()           // current request: /api/v1/employee
+                .path("/{uuid}")                // append uuid
+                .buildAndExpand(createdEmployee.getUuid()) // replace {uuid} with actual UUID
+                .toUri();
+
+        // Return ResponseEntity with 201 Created, body, and Location header
+        return ResponseEntity
+                .created(location)  // sets status 201 and Location header
+                .body(createdEmployee); // include the created employee in response
     }
 }
