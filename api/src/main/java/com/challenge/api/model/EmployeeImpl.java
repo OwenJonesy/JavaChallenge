@@ -4,11 +4,19 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ *Concrete implementation of the {@link Employee} interface.
+ *The {@code uuid} field acts as the unique identifier (primary key).
+ * The {@code fullName} is dynamically recomputed whenever
+ * {@code firstName} or {@code lastName} changes.
+ */
 public class EmployeeImpl implements Employee {
 
-    //variables are private for encapsulation
+    /** variables are private for encapsulation */
     private UUID uuid;
+    /** Acts as a primary key */
     private String firstName;
+
     private String lastName;
     private String fullName; // kept as a field but we also recompute when names change
     private Integer salary;
@@ -17,9 +25,12 @@ public class EmployeeImpl implements Employee {
     private String email;
     private Instant contractHireDate;
     private Instant contractTerminationDate;
+    /** Can be null */
 
+    /** Creates an empty {@code EmployeeImpl} instance */
     public EmployeeImpl() {}
 
+    /** Constructs a fully initialized {@code EmployeeImpl */
     public EmployeeImpl(
             UUID uuid,
             String firstName,
@@ -30,7 +41,7 @@ public class EmployeeImpl implements Employee {
             String email,
             Instant contractHireDate,
             Instant contractTerminationDate) {
-        this.uuid = Objects.requireNonNull(uuid, "uuid"); //Primary key cant be null
+        this.uuid = Objects.requireNonNull(uuid, "uuid"); // Primary key cant be null
         this.firstName = firstName;
         this.lastName = lastName;
         this.fullName = buildFullName(firstName, lastName);
@@ -42,7 +53,13 @@ public class EmployeeImpl implements Employee {
         this.contractTerminationDate = contractTerminationDate;
     }
 
-    // Helper method to Handle cases where first or last name is missing.
+    /**
+     * Builds a human-readable full name string from first and last names.
+     *
+     * @param first the first name (nullable or blank)
+     * @param last the last name (nullable or blank)
+     * @return the concatenated full name, or {@code null} if both names are missing
+     */
     private static String buildFullName(String first, String last) {
         if ((first == null || first.isBlank()) && (last == null || last.isBlank())) return null;
         if (first == null || first.isBlank()) return last;
@@ -88,7 +105,7 @@ public class EmployeeImpl implements Employee {
 
     @Override
     public void setFullName(String name) {
-        this.fullName = buildFullName(this.firstName, this.lastName);;
+        this.fullName = buildFullName(this.firstName, this.lastName);
     }
 
     @Override
@@ -151,7 +168,13 @@ public class EmployeeImpl implements Employee {
         this.contractTerminationDate = date;
     }
 
-    @Override public String toString() {
+    /**
+     * Returns a short string representation of the employee.
+     *
+     * @return string containing the UUID and full name
+     */
+    @Override
+    public String toString() {
         return "Employee{uuid=" + uuid + ", fullName='" + getFullName() + "'}";
     }
 }

@@ -1,13 +1,11 @@
 package com.challenge.api.controller;
 
 import com.challenge.api.model.Employee;
-
+import com.challenge.api.model.EmployeeImpl;
+import com.challenge.api.service.EmployeeService;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
-
-import com.challenge.api.model.EmployeeImpl;
-import com.challenge.api.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,51 +26,51 @@ public class EmployeeController {
     }
 
     /**
-     * @implNote Need not be concerned with an actual persistence layer. Generate mock Employee models as necessary.
-     * @return One or more Employees.
+     * Handles requests for retrieving all employees.
+     *
+     * @return ResponseEntity with a list of Employee objects and status 200 (OK).
      */
-    @GetMapping //Tells spring it handles GET requests
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    @GetMapping // Tells spring it handles GET requests
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     /**
-     * @implNote Need not be concerned with an actual persistence layer. Generate mock Employee model as necessary.
-     * @param uuid Employee UUID
-     * @return Requested Employee if exists
+     * Retrieves a single employee by UUID.
+     *
+     * @param uuid the unique identifier of the employee
+     * @return ResponseEntity with the Employee object and status 200 (OK),
+     * or throws ResponseStatusException with 404 (Not Found) if employee does not exist.
      */
     @GetMapping("/{uuid}")
-    public Employee getEmployeeByUuid(@PathVariable UUID uuid) {
-
+    public ResponseEntity<Employee> getEmployeeByUuid(@PathVariable UUID uuid) {
         Employee employee = employeeService.getEmployeeByUuid(uuid);
-
-        if(employee == null) {
+        if (employee == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found");
         }
-
-        return employee;
+        return ResponseEntity.ok(employee);
     }
 
     /**
-     * @implNote Need not be concerned with an actual persistence layer.
-     * @param requestBody hint!
-     * @return Newly created Employee with a RESTful 201 response
+     * Creates a new employee resource.
+     *
+     * @param employee request body containing employee details
+     * @return ResponseEntity with the created Employee object, status 201 (Created),
+     * and Location header pointing to the new resource URI.
      */
-    @PostMapping //Tells spring to handle POST requests
+    @PostMapping // Tells spring to handle POST requests
     public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeImpl employee) {
 
         Employee createdEmployee = employeeService.createEmployee(employee);
 
-        //builds a URI pointing to the newly created resource.
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()           // current request: /api/v1/employee
-                .path("/{uuid}")                // append uuid
+        // builds a URI pointing to the newly created resource.
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest() // current request: /api/v1/employee
+                .path("/{uuid}") // append uuid
                 .buildAndExpand(createdEmployee.getUuid()) // replace {uuid} with actual UUID
                 .toUri();
 
         // Return ResponseEntity with 201 Created, body, and Location header
-        return ResponseEntity
-                .created(location)  // sets status 201 and Location header
+        return ResponseEntity.created(location) // sets status 201 and Location header
                 .body(createdEmployee); // include the created employee in response
     }
 }

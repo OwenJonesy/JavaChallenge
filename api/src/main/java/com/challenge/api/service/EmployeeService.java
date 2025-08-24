@@ -1,11 +1,10 @@
 package com.challenge.api.service;
 
 import com.challenge.api.model.Employee;
-
 import java.util.List;
 import java.util.UUID;
 
-//Service layer interface for handling operations for Employees
+// Service layer interface for handling operations for Employees
 public interface EmployeeService {
 
     /**
@@ -25,12 +24,10 @@ public interface EmployeeService {
      */
     Employee getEmployeeByUuid(UUID uuid);
 
-
     /**
      * Create and store a new employee.
      * @param employee employee to be created
      * @return the created employee (with UUID set)
      */
     Employee createEmployee(Employee employee);
-
 }

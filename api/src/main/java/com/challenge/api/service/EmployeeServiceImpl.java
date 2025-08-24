@@ -3,11 +3,10 @@ package com.challenge.api.service;
 import com.challenge.api.model.Employee;
 import com.challenge.api.model.EmployeeImpl;
 import jakarta.annotation.PostConstruct;
-import org.springframework.stereotype.Service;
-
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.stereotype.Service;
 
 /**
  * In-memory implementation of EmployeeService.
@@ -19,28 +18,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @PostConstruct
     public void init() {
         Employee emp1 = new EmployeeImpl(
-                UUID.randomUUID(),
-                "Alice",
-                "Smith",
-                60000,
-                30,
-                "Developer",
-                "alice@example.com",
-                Instant.now(),
-                null
-        );
+                UUID.randomUUID(), "Alice", "Smith", 60000, 30, "Developer", "alice@example.com", Instant.now(), null);
 
         Employee emp2 = new EmployeeImpl(
-                UUID.randomUUID(),
-                "Bob",
-                "Jones",
-                75000,
-                40,
-                "Manager",
-                "bob@example.com",
-                Instant.now(),
-                null
-        );
+                UUID.randomUUID(), "Bob", "Jones", 75000, 40, "Manager", "bob@example.com", Instant.now(), null);
 
         employeeStore.put(emp1.getUuid(), emp1);
         employeeStore.put(emp2.getUuid(), emp2);
