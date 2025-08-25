@@ -52,3 +52,21 @@ To format code according to style guidelines, you can run **spotlessApply** task
 
 The spotless plugin will also execute check-and-validation tasks as part of the gradle **build** task.
 `./gradlew build`
+
+
+## Features
+* GET /api/v1/employee** → Fetch all employees
+* GET /api/v1/employee/{uuid}** → Fetch an employee by UUID
+* POST /api/v1/employee** → Create a new employee (returns `201 Created` with `Location` header)
+
+## Implementation Details
+* Framework: Spring Boot (REST controller annotations: `@RestController`, `@GetMapping`, `@PostMapping`)
+* Model: `Employee` interface with an implementation `EmployeeImpl`
+* Service Layer: `EmployeeService` provides mock employee data and handles create/retrieve logic
+* Controller: `EmployeeController` exposes REST endpoints under `/api/v1/employee`
+* Error Handling: Uses `ResponseStatusException` to return `404 Not Found` when an employee does not exist
+* RESTful Conventions:
+  - `GET /api/v1/employee` → returns list of employees
+  - `GET /api/v1/employee/{uuid}` → returns a single employee or 404
+  - `POST /api/v1/employee` → creates a new employee and returns `201 Created` with a `Location` header  
+

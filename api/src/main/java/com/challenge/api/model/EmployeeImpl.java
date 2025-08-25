@@ -5,8 +5,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- *Concrete implementation of the {@link Employee} interface.
- *The {@code uuid} field acts as the unique identifier (primary key).
+ * Concrete implementation of the {@link Employee} interface.
+ * The {@code uuid} field acts as the unique identifier (primary key).
  * The {@code fullName} is dynamically recomputed whenever
  * {@code firstName} or {@code lastName} changes.
  */

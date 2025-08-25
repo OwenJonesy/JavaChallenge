@@ -13,7 +13,13 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
- * Fill in the missing aspects of this Spring Web REST Controller. Don't forget to add a Service layer.
+ * REST controller for managing {@link Employee} resources.
+ * <p>
+ * This controller provides endpoints to:
+ *  Retrieve all employees</li>
+ *  Retrieve a single employee by their UUID</li>
+ *  Create a new employee record</li>
+ *
  */
 @RestController
 @RequestMapping("/api/v1/employee")
